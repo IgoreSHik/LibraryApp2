@@ -99,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
 
+    public static final int NEW_BOOK_ACTIVITY_REQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    public static final int NEW_BOOK_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
