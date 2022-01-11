@@ -25,6 +25,11 @@ public class EditBookActivity extends AppCompatActivity {
         editAuthorEditText = findViewById(R.id.edit_book_author);
 
         final Button button = findViewById(R.id.button_save);
+
+        if (getIntent().hasExtra("title") && getIntent().hasExtra("author")) {
+            editTitleEditText.setText(getIntent().getStringExtra("title"));
+            editAuthorEditText.setText(getIntent().getStringExtra("author"));
+        }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

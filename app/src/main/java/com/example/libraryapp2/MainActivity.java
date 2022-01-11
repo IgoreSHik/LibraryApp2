@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProviders;
@@ -48,12 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         private TextView bookTitleTextView;
         private TextView bookAuthorTextView;
+        private ConstraintLayout mainLayout;
 
         public BookHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.book_list_item, parent, false));
 
             bookTitleTextView = itemView.findViewById(R.id.book_title);
             bookAuthorTextView = itemView.findViewById(R.id.book_author);
+            mainLayout = itemView.findViewById(R.id.mainLayout);
         }
 
         public void bind(Book book) {
@@ -76,6 +79,27 @@ public class MainActivity extends AppCompatActivity {
             if (books != null) {
                 Book book = books.get(position);
                 holder.bind(book);
+                holder.mainLayout.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        bookViewModel.delete(book);
+                        Snackbar.make(findViewById(R.id.main_layout), getString(R.string.book_deleted),
+                                Snackbar.LENGTH_LONG).show();
+                        return false;
+                    }
+                });
+                holder.mainLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, EditBookActivity.class);
+                        intent.putExtra("title", book.getTitle());
+                        intent.putExtra("author", book.getAuthor());
+                        startActivityForResult(intent, NEW_BOOK_ACTIVITY_REQUEST_CODE);
+                        bookViewModel.delete(book);
+                        Snackbar.make(findViewById(R.id.main_layout), getString(R.string.book_deleted),
+                                Snackbar.LENGTH_LONG).show();
+                    }
+                });
             } else {
                 Log.d("MainActivity", "No books");
             }
